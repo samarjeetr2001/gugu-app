@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "434352447109",
+    "project_id": "gugu-b9bbf",
+    "storage_bucket": "gugu-b9bbf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:434352447109:android:7122bb4531d325658613ec",
+        "android_client_info": {
+          "package_name": "com.example.gugu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "434352447109-7oa10l0537jnvme6eo67rt28jnp1got8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.gugu",
+            "certificate_hash": "d9c12589ec1029bd558b54566113bc2e88130b28"
+          }
+        },
+        {
+          "client_id": "434352447109-3qtrqh2i4h0g6t2aossbreb889utv9bh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA5Ib9rRvIuKRmDCOWtxf-lrGMBWkrxza8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "434352447109-3qtrqh2i4h0g6t2aossbreb889utv9bh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
