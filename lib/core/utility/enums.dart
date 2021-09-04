@@ -1,1 +1,1 @@
-class Enum{}
+enum AuthenticationStatus { VerificationCompleted, VerificationNotCompleted }

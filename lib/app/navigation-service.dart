@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
+import 'home-page.dart';
+
 class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  static const String signInRoute = "/sign-in";
-  static const String registrationRoute = "/registration";
   static const String homeRoute = "/home";
-  static const String productCardsRoute = "/product-cards";
-  static const String productDetailRoute = "/product-detail";
-  static const String wishlistRoute = "/wishlist";
-  static const String cartRoute = "/cart";
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
+      case homeRoute:
+        return MaterialPageRoute(
+            settings: RouteSettings(name: NavigationService.homeRoute),
+            builder: (_) => MyHomePage());
       default:
         throw Exception("NavigationService: Invalid Navigation ");
     }
