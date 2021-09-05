@@ -1,7 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:gugu/app/authentication/presentation/phone-auth/view/phone-auth-view.dart';
 
+import 'app/authentication/presentation/splash-screen/splash-screen-view.dart';
 import 'app/navigation-service.dart';
 import 'injection-container.dart' as di;
 
@@ -45,7 +45,7 @@ class _AppState extends State<App> {
         }
 
         if (snapshot.connectionState == ConnectionState.done) {
-          return PhoneAuthView();
+          return SplashScreenView();
         }
 
         return Loading();

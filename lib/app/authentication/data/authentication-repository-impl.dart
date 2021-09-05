@@ -36,4 +36,13 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         verificationId: gVERIFICATIONID, smsCode: code);
     await _firebaseAuth.signInWithCredential(credential);
   }
+
+  @override
+  bool checkLoginStatus() {
+    if (_firebaseAuth.currentUser == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

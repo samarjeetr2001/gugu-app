@@ -114,6 +114,13 @@ class PhoneAuthViewState
           },
           child: Text("Change mobile number "),
         ),
+        TextButton(
+          onPressed: () {
+            controller.verifyPhoneNumber(
+                phoneNumber: _phoneNumberTextEditingController.text);
+          },
+          child: Text("Resend OTP"),
+        ),
       ],
     );
   }
