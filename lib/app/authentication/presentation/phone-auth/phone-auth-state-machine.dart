@@ -18,6 +18,9 @@ class PhoneAuthStateMachine
       case PhoneAuthErrorEvent:
         newState = new PhoneAuthErrorState();
         break;
+      case PhoneAuthChangePhoneNumberEvent:
+        newState = new PhoneAuthInitState();
+        break;
       default:
         throw Exception("Invalid event $eventType : PhoneAuthStateMachine");
     }
@@ -42,3 +45,5 @@ class PhoneAuthLoadingEvent extends PhoneAuthEvent {}
 class PhoneAuthVerifyCodeEvent extends PhoneAuthEvent {}
 
 class PhoneAuthErrorEvent extends PhoneAuthEvent {}
+
+class PhoneAuthChangePhoneNumberEvent extends PhoneAuthEvent {}

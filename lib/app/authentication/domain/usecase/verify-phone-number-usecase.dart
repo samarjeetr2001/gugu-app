@@ -10,14 +10,15 @@ class VerifyPhoneNumberUsecase extends CompletableUseCase<String> {
   @override
   Future<Stream<AuthenticationStatus>> buildUseCaseStream(params) async {
     final StreamController<AuthenticationStatus> streamController =
-        StreamController();
+        new StreamController();
     try {
       await _repository.verifyPhoneNumber(phoneNumber: params as String);
+      streamController.close();
     } catch (error) {
-      print('error in getting tags : $error :  VerifyPhoneNumberUsecase ');
+      print(
+          'error in verify Phone Number : $error :  VerifyPhoneNumberUsecase ');
       streamController.addError(error.toString());
     }
-    streamController.close();
     return streamController.stream;
   }
 }

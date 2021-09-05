@@ -8,14 +8,14 @@ class VerifyCodeUsecase extends CompletableUseCase<String> {
 
   @override
   Future<Stream<void>> buildUseCaseStream(params) async {
-    final StreamController<void> streamController = StreamController();
+    final StreamController<void> streamController = new StreamController();
     try {
       await _repository.verifyCode(code: params as String);
+      streamController.close();
     } catch (error) {
-      print('error in getting tags : $error :  VerifyCodeUsecase ');
+      print('error in verify Code : $error :  VerifyCodeUsecase ');
       streamController.addError(error.toString());
     }
-    streamController.close();
     return streamController.stream;
   }
 }

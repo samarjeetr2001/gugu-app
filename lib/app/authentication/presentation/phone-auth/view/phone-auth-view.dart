@@ -32,44 +32,25 @@ class PhoneAuthViewState
       switch (currentStateType) {
         case PhoneAuthInitState:
           return Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: _phoneNumberTextEditingController,
-                ),
-                TextButton(
-                  onPressed: () {
-                    controller.verifyPhoneNumber(
-                        phoneNumber: _phoneNumberTextEditingController.text);
-                  },
-                  child: Text("Send OTP"),
-                ),
-              ],
-            ),
+            body: phoneVerificationContentBody(controller),
           );
         case PhoneAuthVerifyCodeState:
           return Scaffold(
-            body: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextField(
-                  controller: _codeTextEditingController,
-                ),
-                TextButton(
-                  onPressed: () {
-                    controller.verifyCode(
-                        code: _codeTextEditingController.text);
-                  },
-                  child: Text("check OTP"),
-                ),
-              ],
-            ),
+            body: verificationCodeContentBody(controller),
           );
         case PhoneAuthErrorState:
           return Scaffold(
-            body: Center(
-              child: ErrorState(),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                currentStateType == PhoneAuthInitState
+                    ? phoneVerificationContentBody(controller)
+                    : verificationCodeContentBody(controller),
+                SizedBox(
+                  height: 50,
+                  child: Text("**ERROR**"),
+                )
+              ],
             ),
           );
         case PhoneAuthLoadingState:
@@ -81,6 +62,60 @@ class PhoneAuthViewState
       }
       throw Exception("Unrecognized state $currentStateType encountered");
     });
+  }
+
+  Column phoneVerificationContentBody(PhoneAuthController controller) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFormField(
+          autovalidateMode: AutovalidateMode.always,
+          controller: _phoneNumberTextEditingController,
+          validator: (value) {
+            if (value != null) if (value.length != 10)
+              return "number is in-valid";
+          },
+          decoration: InputDecoration(labelText: ""),
+        ),
+        TextButton(
+          onPressed: () {
+            if (_phoneNumberTextEditingController.text.length == 10)
+              controller.verifyPhoneNumber(
+                  phoneNumber: _phoneNumberTextEditingController.text);
+          },
+          child: Text("Send "),
+        ),
+      ],
+    );
+  }
+
+  Column verificationCodeContentBody(PhoneAuthController controller) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        TextFormField(
+          autovalidateMode: AutovalidateMode.always,
+          controller: _codeTextEditingController,
+          validator: (value) {
+            if (value != null) if (value.length != 6) return "code is in-valid";
+          },
+          decoration: InputDecoration(labelText: ""),
+        ),
+        TextButton(
+          onPressed: () {
+            if (_codeTextEditingController.text.length == 6)
+              controller.verifyCode(code: _codeTextEditingController.text);
+          },
+          child: Text("Check "),
+        ),
+        TextButton(
+          onPressed: () {
+            controller.changePhoneNumber();
+          },
+          child: Text("Change mobile number "),
+        ),
+      ],
+    );
   }
 
   @override
