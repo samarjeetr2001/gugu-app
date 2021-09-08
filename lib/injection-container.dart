@@ -1,5 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:gugu/app/authentication/domain/usecase/check-login-status-usecase.dart';
+import 'package:gugu/app/authentication/domain/usecase/get-current-user-usecase.dart';
+import 'package:gugu/app/authentication/domain/usecase/register-user-usecase.dart';
 import 'package:gugu/app/authentication/domain/usecase/verify-code-usecase.dart';
 import 'package:gugu/app/authentication/domain/usecase/verify-phone-number-usecase.dart';
 import 'package:gugu/app/authentication/presentation/phone-auth/phone-auth-presenter.dart';
@@ -21,11 +23,15 @@ Future<void> init() async {
   serviceLocator
       .registerFactory(() => VerifyPhoneNumberUsecase(serviceLocator()));
   serviceLocator.registerFactory(() => VerifyCodeUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => RegisterUserUsecase(serviceLocator()));
+  serviceLocator.registerFactory(() => GetCurrentUserUsecase(serviceLocator()));
   serviceLocator
       .registerFactory(() => CheckLoginStatusUsecase(serviceLocator()));
-  serviceLocator.registerFactory(
-      () => PhoneAuthPresenter(serviceLocator(), serviceLocator()));
+  serviceLocator.registerFactory(() =>
+      PhoneAuthPresenter(serviceLocator(), serviceLocator(), serviceLocator()));
   serviceLocator.registerFactory(() => SplashScreenPresenter(serviceLocator()));
+  //
+  //call service
 }
 
 Future<void> reset() async {
