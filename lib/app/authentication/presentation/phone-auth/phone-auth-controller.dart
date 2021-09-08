@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gugu/core/presentation/observer.dart';
@@ -62,8 +64,6 @@ class PhoneAuthController extends Controller {
       code: code,
       observer: new UseCaseObserver(
         () {
-          // _navigationService.navigateTo(NavigationService.homeRoute,
-          //     shouldReplace: true);
           _stateMachine.onEvent(new PhoneAuthRegistrationEvent());
           refreshUI();
         },
@@ -79,5 +79,32 @@ class PhoneAuthController extends Controller {
   void changePhoneNumber() {
     _stateMachine.onEvent(new PhoneAuthChangePhoneNumberEvent());
     refreshUI();
+  }
+
+  void registerUser({
+    required String phoneNumber,
+    required String name,
+    required String bioMessage,
+    required Uint8List profilePhoto,
+  }) {
+    _stateMachine.onEvent(new PhoneAuthLoadingEvent());
+    refreshUI();
+    _presenter.registerUser(
+      phoneNumber: phoneNumber,
+      name: name,
+      bioMessage: bioMessage,
+      profilePhoto: profilePhoto,
+      observer: new UseCaseObserver(
+        () {
+          _navigationService.navigateTo(NavigationService.homeRoute,
+              shouldReplace: true);
+        },
+        (error) {
+          _stateMachine.onEvent(new PhoneAuthErrorEvent());
+          refreshUI();
+          Fluttertoast.showToast(msg: error.toString());
+        },
+      ),
+    );
   }
 }
