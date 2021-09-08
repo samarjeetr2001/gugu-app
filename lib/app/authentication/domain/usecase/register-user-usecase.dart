@@ -20,7 +20,7 @@ class RegisterUserUsecase
       );
       streamController.close();
     } catch (error) {
-      print('error in getting tags : error :  RegisterUserUsecase ');
+      print('error in registering user : $error :  RegisterUserUsecase ');
       streamController.addError(error);
     }
     return streamController.stream;
