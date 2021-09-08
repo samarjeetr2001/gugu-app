@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
 
 import '../phone-auth-state-machine.dart';
-import '../../../../../core/presentation/states/error-state.dart';
 import '../../../../../core/presentation/states/loading-state.dart';
 import '../phone-auth-controller.dart';
 
@@ -37,6 +36,16 @@ class PhoneAuthViewState
         case PhoneAuthVerifyCodeState:
           return Scaffold(
             body: verificationCodeContentBody(controller),
+          );
+        case PhoneAuthRegistrationState:
+          return Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //name,
+                //image
+              ],
+            ),
           );
         case PhoneAuthErrorState:
           return Scaffold(

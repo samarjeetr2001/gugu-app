@@ -43,14 +43,10 @@ class PhoneAuthController extends Controller {
       phoneNumber: phoneNumber,
       observer: new UseCaseObserver(
         () {
-          print("#########@@@@@ success");
-
           _stateMachine.onEvent(new PhoneAuthVerifyCodeEvent());
           refreshUI();
         },
         (error) {
-          print("#########@@@@@ error");
-
           _stateMachine.onEvent(new PhoneAuthErrorEvent());
           refreshUI();
           Fluttertoast.showToast(msg: error);
@@ -66,8 +62,10 @@ class PhoneAuthController extends Controller {
       code: code,
       observer: new UseCaseObserver(
         () {
-          _navigationService.navigateTo(NavigationService.homeRoute,
-              shouldReplace: true);
+          // _navigationService.navigateTo(NavigationService.homeRoute,
+          //     shouldReplace: true);
+          _stateMachine.onEvent(new PhoneAuthRegistrationEvent());
+          refreshUI();
         },
         (error) {
           _stateMachine.onEvent(new PhoneAuthErrorEvent());
