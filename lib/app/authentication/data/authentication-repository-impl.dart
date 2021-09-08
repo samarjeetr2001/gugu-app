@@ -1,9 +1,14 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gugu/app/authentication/domain/repository/authentication-repository.dart';
+import 'package:gugu/app/call-services/domain/entity/user-entity.dart';
+import 'package:gugu/core/utility/db-keys.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
   String gVERIFICATIONID = "";
+  UserEntity? gCURRENTUSER;
 
   @override
   Future<void> verifyPhoneNumber({required String phoneNumber}) async {
@@ -44,5 +49,18 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
     } else {
       return true;
     }
+  }
+
+  @override
+  Future<UserEntity> getCurrentUser() async {
+    if (gCURRENTUSER == null) {
+      DocumentSnapshot userDoc = await _firebaseFirestore
+          .collection(DBKeys.collectionNameUser)
+          .doc(_firebaseAuth.currentUser!.uid)
+          .get();
+      gCURRENTUSER =
+          await UserEntity.fromMap(user: userDoc.data()!, userID: userDoc.id);
+    }
+    return gCURRENTUSER!;
   }
 }
