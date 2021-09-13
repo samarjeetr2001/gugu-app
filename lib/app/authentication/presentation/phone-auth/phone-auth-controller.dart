@@ -64,20 +64,43 @@ class PhoneAuthController extends Controller {
       code: code,
       observer: new UseCaseObserver(
         () {
-          _stateMachine.onEvent(new PhoneAuthRegistrationEvent());
-          refreshUI();
+          _presenter.checkRegistrationStatus(
+            observer: new UseCaseObserver(
+              () {},
+              (error) {
+                errorMethod(error);
+              },
+              onNextFunc: (bool status) {
+                if (status) {
+                  _navigationService.navigateTo(NavigationService.homeRoute,
+                      shouldReplace: true);
+                } else {
+                  _stateMachine.onEvent(new PhoneAuthRegistrationEvent());
+                  refreshUI();
+                }
+              },
+            ),
+          );
         },
         (error) {
-          _stateMachine.onEvent(new PhoneAuthErrorEvent());
-          refreshUI();
-          Fluttertoast.showToast(msg: error.toString());
+          errorMethod(error);
         },
       ),
     );
   }
 
+  void errorMethod(error) {
+    _stateMachine.onEvent(new PhoneAuthErrorEvent());
+    refreshUI();
+    Fluttertoast.showToast(msg: error.toString());
+  }
+
   void changePhoneNumber() {
     _stateMachine.onEvent(new PhoneAuthChangePhoneNumberEvent());
+    refreshUI();
+  }
+
+  void refresh() {
     refreshUI();
   }
 
@@ -100,9 +123,7 @@ class PhoneAuthController extends Controller {
               shouldReplace: true);
         },
         (error) {
-          _stateMachine.onEvent(new PhoneAuthErrorEvent());
-          refreshUI();
-          Fluttertoast.showToast(msg: error.toString());
+          errorMethod(error);
         },
       ),
     );

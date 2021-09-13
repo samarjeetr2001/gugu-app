@@ -23,7 +23,6 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
         // _status = AuthenticationStatus.VerificationCompleted;
       },
       verificationFailed: (FirebaseAuthException error) {
-        print("#########@@@@@");
 
         if (error.code == 'invalid-phone-number') {
           throw Exception('The provided phone number is not valid.');
@@ -95,5 +94,16 @@ class AuthenticationRepositoryImpl implements AuthenticationRepository {
       })
     ];
     await Future.wait(futures);
+  }
+
+  @override
+  Future<bool> checkRegistrationStatus() async {
+    print("@@@@@@@@@@@@@@@@@@@@@@@ ${_firebaseAuth.currentUser!.phoneNumber}");
+
+    DocumentSnapshot userDoc = await _firebaseFirestore
+        .collection(DBKeys.collectionNameUser)
+        .doc(_firebaseAuth.currentUser!.uid)
+        .get();
+    return userDoc.exists;
   }
 }

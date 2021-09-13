@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_clean_architecture/flutter_clean_architecture.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../phone-auth-state-machine.dart';
 import '../../../../../core/presentation/states/loading-state.dart';
@@ -16,6 +19,11 @@ class PhoneAuthViewState
       new TextEditingController();
   final TextEditingController _codeTextEditingController =
       new TextEditingController();
+  final TextEditingController _nameTextEditingController =
+      new TextEditingController();
+  final TextEditingController _bioTextEditingController =
+      new TextEditingController(text: "HelloWorld!");
+  Uint8List? userImageData;
   PhoneAuthViewState() : super(new PhoneAuthController());
 
   @override
@@ -42,8 +50,50 @@ class PhoneAuthViewState
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                //name,
-                //image
+                TextFormField(
+                  autovalidateMode: AutovalidateMode.always,
+                  controller: _nameTextEditingController,
+                  validator: (value) {
+                    if (value != null) if (value.length < 2)
+                      return "name is in-valid";
+                  },
+                  decoration: InputDecoration(labelText: "name"),
+                ),
+                TextFormField(
+                  controller: _bioTextEditingController,
+                  decoration: InputDecoration(labelText: "Bio Message"),
+                ),
+                if (userImageData != null)
+                  Container(
+                    height: 200,
+                    width: 200,
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                        image: MemoryImage(
+                          userImageData!,
+                        ),
+                      ),
+                    ),
+                  ),
+                if (userImageData == null)
+                  TextButton(
+                    onPressed: () {
+                      getImage(controller);
+                    },
+                    child: Text("Add Image"),
+                  ),
+                TextButton(
+                  onPressed: () {
+                    if (_nameTextEditingController.text.length >= 2 ||
+                        userImageData != null)
+                      controller.registerUser(
+                          phoneNumber: _phoneNumberTextEditingController.text,
+                          name: _nameTextEditingController.text,
+                          bioMessage: _bioTextEditingController.text,
+                          profilePhoto: userImageData!);
+                  },
+                  child: Text("Submit"),
+                ),
               ],
             ),
           );
@@ -71,6 +121,19 @@ class PhoneAuthViewState
       }
       throw Exception("Unrecognized state $currentStateType encountered");
     });
+  }
+
+  Future getImage(PhoneAuthController controller) async {
+    Uint8List temp;
+    // ignore: invalid_use_of_visible_for_testing_member
+    PickedFile? _image = await ImagePicker.platform
+        .pickImage(source: ImageSource.gallery, imageQuality: 50);
+
+    if (_image != null) {
+      temp = await _image.readAsBytes();
+      userImageData = temp;
+    }
+    controller.refresh();
   }
 
   Column phoneVerificationContentBody(PhoneAuthController controller) {

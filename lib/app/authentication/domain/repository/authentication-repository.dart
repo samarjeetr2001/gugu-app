@@ -13,4 +13,5 @@ abstract class AuthenticationRepository {
     required String bioMessage,
     required Uint8List profilePhoto,
   });
+  Future<bool> checkRegistrationStatus();
 }

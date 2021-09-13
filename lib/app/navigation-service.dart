@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gugu/app/authentication/presentation/phone-auth/view/phone-auth-view.dart';
 
-import 'home-page.dart';
+import 'home/presentation/view/home-view.dart';
 
 class NavigationService {
   final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -18,7 +18,7 @@ class NavigationService {
       case homeRoute:
         return MaterialPageRoute(
             settings: RouteSettings(name: NavigationService.homeRoute),
-            builder: (_) => MyHomePage());
+            builder: (_) => HomeView());
       default:
         throw Exception("NavigationService: Invalid Navigation ");
     }
